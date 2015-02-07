@@ -45,20 +45,21 @@ def play_game(board):
         print("There's no solution for this board")
 
 def play_game_helper(board, c, r):
-    new_board = [row[:] for row in board]
+    #new_board = [row[:] for row in board]
     row = r + c // ROW_SIZE
     col = c % ROW_SIZE
     if row >= ROW_SIZE: return True
-    if new_board[row][col] == 0:
+    if board[row][col] == 0:
         for i in range(1, ROW_SIZE + 1):
-            new_board[row][col] = i
-            if legal_placement(new_board, col, row):
-                if play_game_helper(new_board, col + 1, row):
+            board[row][col] = i
+            if legal_placement(board, col, row):
+                if play_game_helper(board, col + 1, row):
                     return True
+        board[row][col] = 0
         return False
     else:
-        if legal_placement(new_board, col, row):
-            return play_game_helper(new_board, col + 1, row)
+        if legal_placement(board, col, row):
+            return play_game_helper(board, col + 1, row)
         else:
             return False
 
@@ -92,4 +93,11 @@ def set_new_board():
         else:
             if inpt == 'end': break
             print('Illegal input, try again')
+    SEP = ' '
+    for row in range(ROW_SIZE):
+        for col in range(ROW_SIZE):
+            txt = str(board[row][col]) if col == 0 else SEP + str(board[row][col])
+            print(txt,end = '')
+        if row != ROW_SIZE - 1:
+            print('')
     return board
