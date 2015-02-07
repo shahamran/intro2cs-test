@@ -10,19 +10,19 @@ def init_board():
 
 def legal_placement(board, col, row):
     current = board[row][col]
-    for i in range(ROW_SIZE):
-        if i == row: continue
-        if board[row][i] == current:
+    for c in range(ROW_SIZE):
+        if c == col: continue
+        if board[row][c] == current:
             return False
-    for i in range(ROW_SIZE):
-        if i == col: continue
-        if board[i][col] == current:
+    for r in range(ROW_SIZE):
+        if r == row: continue
+        if board[r][col] == current:
             return False
-    factor_y = col // SMALL
-    factor_x = row // SMALL
+    factor_y = (col // SMALL) * SMALL
+    factor_x = (row // SMALL) * SMALL
     for x in range(SMALL):
         for y in range(SMALL):
-            if x == col and y == row: continue
+            if x + factor_x == row and y + factor_y == col: continue
             if board[x + factor_x][y + factor_y] == current:
                 return False
     return True
@@ -34,7 +34,7 @@ def print_board(board, filename):
             for col in range(ROW_SIZE):
                 txt = str(board[row][col]) if col == 0 else SEP + str(board[row][col])
                 f.write(txt)
-            if row != 8: f.write('\n' + '\n')
+            if row != ROW_SIZE - 1: f.write('\n' + '\n')
         f.close()
 
 FILENAME = 'SUDOKU_SOL.txt'
@@ -45,7 +45,7 @@ def play_game(board):
         print("There's no solution for this board")
 
 def play_game_helper(board, c, r):
-    new_board = board[:]
+    new_board = [row[:] for row in board]
     row = r + c // ROW_SIZE
     col = c % ROW_SIZE
     if row >= ROW_SIZE: return True
@@ -83,10 +83,10 @@ def set_new_board():
     inpt = ''
     print('Enter values, type "end" when finished.')
     while inpt != 'end':
-        inpt = input('col,row num: ')
+        inpt = input('row,col num: ')
         if legal_input(inpt):
-            col = int(inpt[:1]) - 1
-            row = int(inpt[2:3]) - 1
+            row = int(inpt[:1]) - 1
+            col = int(inpt[2:3]) - 1
             num = inpt[4:]
             board[row][col] = num
         else:
