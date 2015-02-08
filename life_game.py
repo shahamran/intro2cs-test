@@ -62,7 +62,8 @@ def UltimateLife(table):
 	should_stop = False
 	while not should_stop:
 		yield table
-		lives.append(table)
+		new_table = [row[:] for row in table]
+		lives.append(new_table)
 		table = next(life)
 		for a_life in lives:
 			if not is_diff(a_life, table):
