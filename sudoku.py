@@ -65,11 +65,15 @@ def play_game_helper(board, c, r):
 
 def set_new_board():
 
-    def legal_input(txt):
-        if not ',' in txt: return False
-        col = txt[:1]
-        row = txt[2:3]
-        num = txt[4:]
+    def legal_input(txt, SEP = ',', SPACE = ' '):
+        if not SEP in txt: return False
+        if not SPACE in txt: return False
+        if len(txt) < 5: return False
+        sep_idx = txt.find(SEP)
+        space_idx = txt.find(SPACE)
+        row = txt[:sep_idx]
+        col = txt[sep_idx + 1:space_idx]
+        num = txt[space_idx + 1:]
         numbers = col.isnumeric() and row.isnumeric() and num.isnumeric()
         if not numbers: return False
         col = int(col)
@@ -78,17 +82,19 @@ def set_new_board():
         legal_col = col <= ROW_SIZE and col >= 1
         legal_row = row <= ROW_SIZE and row >= 1
         legal_num = num <= ROW_SIZE and num >= 1
-        return legal_col and legal_row and legal_num
+        if legal_col and legal_row and legal_num:
+            return (row - 1, col - 1, num)
         
     board = init_board()
     inpt = ''
     print('Enter values, type "end" when finished.')
     while inpt != 'end':
         inpt = input('row,col num: ')
-        if legal_input(inpt):
-            row = int(inpt[:1]) - 1
-            col = int(inpt[2:3]) - 1
-            num = inpt[4:]
+        is_legal = legal_input(inpt)
+        if is_legal:
+            row = is_legal[0]
+            col = is_legal[1]
+            num = is_legal[2]
             board[row][col] = num
         else:
             if inpt == 'end': break
