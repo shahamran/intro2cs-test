@@ -58,7 +58,7 @@ def LifeD(table):
 
 def UltimateLife(table):
 	life = Life(table)
-	lives = [table]
+	lives = []
 	should_stop = False
 	while not should_stop:
 		yield table

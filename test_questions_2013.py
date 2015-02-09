@@ -2,8 +2,8 @@ from questions_2013 import *
 
 def test_wc():
 	word_list = [['I','You','We'],['love','hate'],['loving','hating','studying']]
-	wc = WordCombinations(word_list)
-	for sentence in wc:
+	#wc = WordCombinations(word_list)
+	for sentence in WordCombinations(word_list):
 		print(sentence)
 def test_reverse():
 	print_reverse()

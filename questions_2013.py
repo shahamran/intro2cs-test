@@ -19,6 +19,7 @@ def flatten(L):
 			result += flatten(item)
 	return result
 
+
 # WordCombinations
 class WordCombinations:
 	def __init__(self, word_list):
@@ -30,8 +31,22 @@ class WordCombinations:
 			self.all_words *= len(lst)
 
 	def __iter__(self):
-		return self
+		return wc(self.word_list) # recursive
+        return self # non-recursive
 
+    #recursive
+    def wc(word_list):
+        if len(word_list) == 0: yield ''
+        word_list[0].sort() # b
+        SEP , END = ' ' , '.'
+        for word in word_list[0]:
+            if len(word_list) == 1:
+                yield word + END
+            else:
+                for other in WordCombinations(word_list[1:]):
+                    yield word + SEP + other
+
+    # NON RECURSIVE
 	def __next__(self):
 		if self.curr_idx >= self.all_words: raise StopIteration
 		N = len(self.word_list)

@@ -5,7 +5,7 @@ class Node:
 
 def merge(x,y):
 	if not x.next: return y
-	if not y: return x
+	if not y.next: return x
 	if x.data <= y.data:
 		new_y = x.next
 		x.next = merge(y,new_y)
